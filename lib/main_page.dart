@@ -1,4 +1,3 @@
-import 'package:bmi/const.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -9,6 +8,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  double height = 0; // Initial height
+  double weight = 0; // Initial weight
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -17,12 +19,12 @@ class _MainPageState extends State<MainPage> {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             color: Colors.white,
-            child: const Column(
+            child: Column(
               children: [
                 Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Icon(
@@ -35,7 +37,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     Spacer(),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Icon(Icons.female, size: 100.0),
@@ -43,41 +45,43 @@ class _MainPageState extends State<MainPage> {
                         ],
                       ),
                     ),
-                  ], // Add a comma here
-                ), // Add a comma here
+                  ],
+                ),
                 Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
-                            "176",
-                            style: TextStyle(
+                            height.toStringAsFixed(0),
+                            style: const TextStyle(
                                 color: Colors.red,
                                 fontSize: 50.0,
                                 fontWeight: FontWeight.bold),
                           ),
-                          Text("Hight"),
+                          const Text("Height"),
                           Row(
                             children: [
                               FloatingActionButton(
-                                  onPressed: null,
-                                  child: Icon(
-                                    Icons.add,
-                                    size: 40,
-                                    color: Colors.blue,
-                                  )),
-                              SizedBox(
+                                onPressed: onHeightMinus,
+                                child: const Icon(
+                                  Icons.remove,
+                                  size: 40,
+                                  color: Color.fromARGB(255, 161, 1, 135),
+                                ),
+                              ),
+                              const SizedBox(
                                 width: 40.0,
                               ),
                               FloatingActionButton(
-                                  onPressed: null,
-                                  child: Icon(
-                                    Icons.remove,
-                                    size: 40,
-                                    color: Color.fromARGB(255, 161, 1, 135),
-                                  ))
+                                onPressed: onHeightPlus,
+                                child: const Icon(
+                                  Icons.add,
+                                  size: 40,
+                                  color: Colors.blue,
+                                ),
+                              ),
                             ],
                           )
                         ],
@@ -85,36 +89,38 @@ class _MainPageState extends State<MainPage> {
                     ),
                     Spacer(),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
-                            "76",
-                            style: TextStyle(
+                            weight.toStringAsFixed(0),
+                            style: const TextStyle(
                                 color: Colors.red,
                                 fontSize: 50.0,
                                 fontWeight: FontWeight.bold),
                           ),
-                          Text("Weight"),
+                          const Text("Weight"),
                           Row(
                             children: [
                               FloatingActionButton(
-                                  onPressed: null,
-                                  child: Icon(
-                                    Icons.add,
-                                    size: 40,
-                                    color: Colors.blue,
-                                  )),
-                              SizedBox(
+                                onPressed: onWeightMinus,
+                                child: const Icon(
+                                  Icons.remove,
+                                  size: 40,
+                                  color: Color.fromARGB(255, 161, 1, 135),
+                                ),
+                              ),
+                              const SizedBox(
                                 width: 40.0,
                               ),
                               FloatingActionButton(
-                                  onPressed: null,
-                                  child: Icon(
-                                    Icons.remove,
-                                    size: 40,
-                                    color: Color.fromARGB(255, 161, 1, 135),
-                                  ))
+                                onPressed: onWeightPlus,
+                                child: const Icon(
+                                  Icons.add,
+                                  size: 40,
+                                  color: Colors.blue,
+                                ),
+                              ),
                             ],
                           )
                         ],
@@ -122,16 +128,23 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ],
                 ),
-                Column(children: [
-                  Text(
-                    "BMI",
-                    style: TextStyle(fontSize: 20.0),
-                  ),
-                  Text(
-                    '22.00',
-                    style: TextStyle(color: Colors.red, fontSize: 40),
-                  )
-                ]),
+                const SizedBox(height: 50),
+                Column(
+                  children: [
+                    const Text(
+                      "BMI",
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      calculateBMI().toStringAsFixed(2),
+                      style: const TextStyle(
+                          color: Color.fromARGB(255, 14, 1, 63),
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
               ],
             ),
           ),
@@ -139,4 +152,41 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
+  void onHeightMinus() {
+    setState(() {
+      height -= 1;
+    });
+  }
+
+  void onHeightPlus() {
+    setState(() {
+      height += 1;
+    });
+  }
+
+  void onWeightMinus() {
+    setState(() {
+      weight -= 1;
+    });
+  }
+
+  void onWeightPlus() {
+    setState(() {
+      weight += 1;
+    });
+  }
+
+  double calculateBMI() {
+    // Add your BMI calculation logic here
+    // BMI = weight (kg) / (height (m))^2
+    // Adjust the formula based on your requirements
+    return weight / ((height / 100) * (height / 100));
+  }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: MainPage(),
+  ));
 }
